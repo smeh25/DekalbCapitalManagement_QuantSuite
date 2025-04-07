@@ -5,15 +5,33 @@ from structure import Ticker  # Replace with correct import path
 import plotly.graph_objects as go
 import plotly.express as px
 
+
+st.set_page_config(layout="wide")
+
 st.title("Mean Reversion Model")
 
 # Inputs
 symbol = st.text_input("Enter Ticker Symbol", value="UVXY")
 pct_threshold = st.number_input("Enter Daily % Return Threshold (can be negative)", value=10.0)
 
+# Period options
+period_options = [
+    "1d", "5d", "7d", "10d", "1mo", "3mo", "6mo",
+    "1y", "2y", "5y", "10y", "ytd", "max"
+]
+stock_period = st.selectbox("Select Period (How far back to look):", period_options, index=7)
+
+# Interval options
+interval_options = [
+    "1m", "2m", "5m", "15m", "30m", "60m", "90m",
+    "1d", "5d", "1wk", "1mo", "3mo"
+]
+stock_interval = st.selectbox("Select Interval (Granularity):", interval_options, index=7)
+
+
 if st.button("Run Model"):
     # Initialize Ticker object and get historical data
-    ticker = Ticker(symbol)
+    ticker = Ticker(symbol, period= stock_period, interval= stock_interval)
     df = ticker.historical_prices[["Open", "Close"]].copy()
     df["Date"] = df.index
     df.reset_index(drop=True, inplace=True)
