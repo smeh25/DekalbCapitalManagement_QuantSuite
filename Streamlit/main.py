@@ -6,7 +6,7 @@ from datetime import datetime
 import time
 
 
-st.set_page_config(page_title="Financial Dashboard", layout="centered")
+st.set_page_config(page_title="Financial Dashboard", layout="wide")
 
 st.title("📊 Upload Your Portfolio CSV")
 

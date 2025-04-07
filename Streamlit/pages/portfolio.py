@@ -3,7 +3,8 @@ import pandas as pd
 import plotly.graph_objects as go
 from structure import Portfolio, StockPosition
 
-st.set_page_config(page_title="📈 Portfolio Dashboard")
+
+st.set_page_config(page_title="📈 Portfolio Dashboard", layout="wide")
 st.title("📊 Portfolio Performance Over the Past Year")
 
 # Ensure portfolio is in session state

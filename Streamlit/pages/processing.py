@@ -5,7 +5,8 @@ import time
 
 from structure import Ticker, Portfolio, StockPosition, OptionPosition
 
-st.set_page_config(page_title="Loading Portfolio...")
+
+st.set_page_config(page_title="Loading Portfolio...", layout="wide")
 
 st.title("✅ File Uploaded Successfully")
 st.markdown("We're now retrieving financial data and building your portfolio. Please wait...")
