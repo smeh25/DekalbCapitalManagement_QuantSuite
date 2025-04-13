@@ -2,7 +2,7 @@ import streamlit as st
 import numpy as np
 import matplotlib.pyplot as plt
 import yfinance as yf
-from utils import correlation
+import correlation
 from structure import Portfolio, Ticker
 
 
