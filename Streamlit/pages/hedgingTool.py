@@ -29,7 +29,7 @@ hedge_ticker = None
 hedge_correlation = 1.0
 
 if use_alt_hedge:
-    hedge_ticker = st.text_input("Enter hedge equity ticker (e.g., SPY)", value="SPY")
+    hedge_ticker = st.text_input("Enter hedge equity ticker (e.g., SPY)", value="SPY").upper()
 
     if hedge_ticker:
         try:
@@ -42,7 +42,8 @@ if use_alt_hedge:
             )["Close"].dropna()
             main_data = ticker.historical_prices["Close"].dropna()
 
-            
+            if (len(hedge_data) == 0):
+                raise Exception(f"Ticker {hedge_ticker}  not available")
 
             # 3. Align lengths
             min_len = min(len(main_data), len(hedge_data))
