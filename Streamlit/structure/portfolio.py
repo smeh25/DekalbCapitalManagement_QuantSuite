@@ -6,6 +6,7 @@ import os
 class Portfolio:
     def __init__(self):
         self.positions = []
+        self.tickers = []
         self._load_from_csv()
 
     def _load_from_csv(self):
@@ -18,7 +19,16 @@ class Portfolio:
 
         for _, row in df.iterrows():
             try:
-                ticker = Ticker(row["Ticker"])
+                switch = False
+                for i in self.tickers: 
+                    if (i.symbol == row['Ticker'].upper()):
+                        ticker = i
+                        switch == True
+                
+                if (not switch):
+                    ticker = Ticker(row["Ticker"])
+                    self.tickers.append(ticker)
+
                 type_ = row["Type"].lower()
 
                 if type_ == "stock":
@@ -35,6 +45,7 @@ class Portfolio:
                     continue  # Unknown type, skip
 
                 self.add_position(position)
+                ticker.add_position(position)
 
             except Exception as e:
                 print(f"[Portfolio] Skipping row due to error: {e}")
@@ -43,7 +54,7 @@ class Portfolio:
         self.positions.append(position)
 
     def total_value(self):
-        return sum([p.market_value() for p in self.positions])
+        return sum([p.current_price for p in self.positions])
 
     def __repr__(self):
         return f"<Portfolio with {len(self.positions)} positions | Value: ${self.total_value():,.2f}>"

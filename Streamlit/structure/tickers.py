@@ -4,7 +4,7 @@ class Ticker:
     def __init__(self, symbol: str, period: str = "1y", interval: str = "1d"):
         self.symbol = symbol.upper()
         self.ydata = yf.Ticker(self.symbol)
-
+        self.positions = []
         # Fetch historical prices once
         self.historical_prices = self._fetch_history(period, interval)
         self.current_price = self._extract_latest_close()
@@ -23,6 +23,9 @@ class Ticker:
         except Exception as e:
             print(f"[Ticker:{self.symbol}] Error fetching history: {e}")
             return None
+
+    def add_position(self, position):
+        self.positions.append(position)
 
     def _extract_latest_close(self):
         if self.historical_prices is not None and not self.historical_prices.empty:
