@@ -4,6 +4,7 @@ from utils.csvFormat import validate_csv
 import os
 from datetime import datetime
 import time
+from utils.fidelity_parse import parse_fidelity_csv
 
 
 st.set_page_config(page_title="Financial Dashboard", layout="wide")
@@ -33,45 +34,97 @@ option,TSLA,2,2024-06-21,250,call
             
 """)
 
+# Choose CSV Format
+csv_type = st.selectbox(
+    "📂 What kind of CSV are you uploading?",
+    ["Fidelity Export", "Pre-Formatted"]
+)
+
 # Upload CSV
 uploaded_file = st.file_uploader("📁 Upload your portfolio CSV file", type=["csv"])
 
-
+# Confirmation Button
 if uploaded_file:
-    try:
-        df = pd.read_csv(uploaded_file)
-        is_valid, errors = validate_csv(df)
+    if st.button("📤 Upload Selected File"):
+        try:
+            df = pd.read_csv(uploaded_file)
 
-        if is_valid:
-            st.success("✅ CSV uploaded and validated successfully!")
-            st.dataframe(df)
+            # If Fidelity format, parse it first
+            if csv_type == "Fidelity Export":
+                df = parse_fidelity_csv(df)
+            
+            is_valid, errors = validate_csv(df)
 
-            # Define paths
-            SAVE_DIR = "raw_data"
-            ARCHIVE_DIR = os.path.join(SAVE_DIR, "archive")
-            FILENAME = "uploadedInformation.csv"
-            FULL_PATH = os.path.join(SAVE_DIR, FILENAME)
+            if is_valid:
+                st.success("✅ CSV uploaded and validated successfully!")
+                st.dataframe(df)
 
-            # Archive old file if it exists
-            if os.path.exists(FULL_PATH):
-                timestamp = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
-                archived_name = f"uploadedInformation_{timestamp}.csv"
-                archived_path = os.path.join(ARCHIVE_DIR, archived_name)
-                os.rename(FULL_PATH, archived_path)
-                st.info(f"📁 Existing file archived as `{archived_name}`")
+                # Define paths
+                SAVE_DIR = "raw_data"
+                ARCHIVE_DIR = os.path.join(SAVE_DIR, "archive")
+                FILENAME = "uploadedInformation.csv"
+                FULL_PATH = os.path.join(SAVE_DIR, FILENAME)
 
-            # Save the new upload
-            df.to_csv(FULL_PATH, index=False)
-            # st.success("File successfully saved as `uploadedInformation.csv` in `raw_data/.` Rerouting to dashboard…")
+                # Archive old file if it exists
+                if os.path.exists(FULL_PATH):
+                    timestamp = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
+                    archived_name = f"uploadedInformation_{timestamp}.csv"
+                    archived_path = os.path.join(ARCHIVE_DIR, archived_name)
+                    os.rename(FULL_PATH, archived_path)
+                    st.info(f"📁 Existing file archived as `{archived_name}`")
 
-            # # Optional: wait for 1.5 seconds so user sees the success message
-            # time.sleep(1.5)
-            st.switch_page("pages/processing.py")
-        else:
-            st.error("❌ There were issues with your CSV:")
-            for err in errors:
-                st.markdown(f"- {err}")
+                # Save the new upload
+                df.to_csv(FULL_PATH, index=False)
+                # st.success("File successfully saved as `uploadedInformation.csv` in `raw_data/.` Rerouting to dashboard…")
 
-    except Exception as e:
-        st.error(f"⚠️ Error reading CSV: {e}")
+                # # Optional: wait for 1.5 seconds so user sees the success message
+                # time.sleep(1.5)
+                st.switch_page("pages/processing.py")
+            else:
+                st.error("❌ There were issues with your CSV:")
+                for err in errors:
+                    st.markdown(f"- {err}")
+
+        except Exception as e:
+            st.error(f"⚠️ Error reading CSV: {e}")
+
+
+
+# if uploaded_file:
+#     try:
+#         df = pd.read_csv(uploaded_file)
+#         is_valid, errors = validate_csv(df)
+
+#         if is_valid:
+#             st.success("✅ CSV uploaded and validated successfully!")
+#             st.dataframe(df)
+
+#             # Define paths
+#             SAVE_DIR = "raw_data"
+#             ARCHIVE_DIR = os.path.join(SAVE_DIR, "archive")
+#             FILENAME = "uploadedInformation.csv"
+#             FULL_PATH = os.path.join(SAVE_DIR, FILENAME)
+
+#             # Archive old file if it exists
+#             if os.path.exists(FULL_PATH):
+#                 timestamp = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
+#                 archived_name = f"uploadedInformation_{timestamp}.csv"
+#                 archived_path = os.path.join(ARCHIVE_DIR, archived_name)
+#                 os.rename(FULL_PATH, archived_path)
+#                 st.info(f"📁 Existing file archived as `{archived_name}`")
+
+#             # Save the new upload
+#             df.to_csv(FULL_PATH, index=False)
+#             # st.success("File successfully saved as `uploadedInformation.csv` in `raw_data/.` Rerouting to dashboard…")
+
+#             # # Optional: wait for 1.5 seconds so user sees the success message
+#             # time.sleep(1.5)
+#             st.switch_page("pages/processing.py")
+#         else:
+#             st.error("❌ There were issues with your CSV:")
+#             for err in errors:
+#                 st.markdown(f"- {err}")
+
+#     except Exception as e:
+#         st.error(f"⚠️ Error reading CSV: {e}")
 

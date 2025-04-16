@@ -29,10 +29,10 @@ portfolio = Portfolio()
 # Step 3: Store in session
 st.session_state["portfolio"] = portfolio
 
-# Countdown
-for seconds_left in range(2, 0, -1):
-    st.info(f"🔁 Redirecting to dashboard in {seconds_left} second(s)...")
-    time.sleep(1)
+# # Countdown
+# for seconds_left in range(2, 0, -1):
+#     st.info(f"🔁 Redirecting to dashboard in {seconds_left} second(s)...")
+#     time.sleep(1)
 
 # Step 4: Redirect to dashboard
 st.switch_page("pages/dashboard.py")

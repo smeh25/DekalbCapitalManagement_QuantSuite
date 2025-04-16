@@ -1,10 +1,2 @@
 Type,Ticker,Shares,Expiration,Strike,OptionType
-stock,AAPL,50,,,
-stock,MSFT,30,,,
-stock,GOOGL,20,,,
-stock,AMZN,25,,,
-stock,NVDA,40,,,
-stock,META,35,,,
-stock,TSLA,15,,,
-stock,JPM,45,,,
-stock,V,60,,,
+stock,DKNG,100.0,,,
