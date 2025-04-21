@@ -12,6 +12,7 @@ class Ticker:
         # Fetch options chain for the first available expiration date
         self.calls, self.puts = self._fetch_options()
 
+    
     def _fetch_history(self, period, interval):
         try:
             return self.ydata.history(
