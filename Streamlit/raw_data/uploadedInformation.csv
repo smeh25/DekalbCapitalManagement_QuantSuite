@@ -1,2 +1,2 @@
 Type,Ticker,Shares,Expiration,Strike,OptionType
-stock,DKNG,100.0,,,
+option,TSLA,2,2025-05-02,285,put

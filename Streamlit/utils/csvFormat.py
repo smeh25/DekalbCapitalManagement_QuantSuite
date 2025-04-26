@@ -37,7 +37,7 @@ def validate_csv(df: pd.DataFrame) -> tuple[bool, list[str]]:
                 if pd.isna(row["Strike"]) or not isinstance(row["Strike"], (int, float)):
                     errors.append(f"Row {row_num}: 'Strike' must be a number")
 
-                if row["Option Type"] not in ["call", "put"]:
+                if row["OptionType"] not in ["call", "put"]:
                     errors.append(f"Row {row_num}: 'Option Type' must be 'call' or 'put'")
 
         except Exception as e:

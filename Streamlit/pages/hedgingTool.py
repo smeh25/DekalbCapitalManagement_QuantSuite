@@ -64,6 +64,14 @@ total_delta = sum(pos.delta for pos in ticker.positions)
 total_gamma = sum(pos.gamma for pos in ticker.positions)
 spot_price = ticker.current_price
 
+for pos in ticker.positions:
+    st.markdown(pos.delta)
+    st.markdown(pos.gamma)
+    st.markdown(pos.iv)
+    st.markdown(pos.theta)
+    st.markdown(pos.vega)
+    st.markdown(pos.rho)
+
 st.markdown(f"**Current Price:** ${spot_price:.2f}")
 st.markdown(f"**Expected Price:** ${(spot_price + (spot_price * expected_move_pct)):.2f}")
 st.markdown(f"**Total Delta:** {total_delta:.2f}")
