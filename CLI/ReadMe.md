@@ -1,0 +1,1 @@
+To start the command line interface app, just run the main.py file with python. In an IDE either open the file and press run or type "python main.py" into the terminal once your working directory is CLI. 
