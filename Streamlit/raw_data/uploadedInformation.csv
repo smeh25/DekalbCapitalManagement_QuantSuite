@@ -1,2 +1,3 @@
 Type,Ticker,Shares,Expiration,Strike,OptionType
-option,TSLA,2,2025-05-02,285,put
+option,TSLA,2,2025-05-02,285.0,call
+stock,TSLA,100,,,

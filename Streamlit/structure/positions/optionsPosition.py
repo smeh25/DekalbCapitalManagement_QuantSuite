@@ -8,6 +8,7 @@ from datetime import datetime
 class OptionPosition(Position):
     def __init__(self, ticker, shares, expiration, strike, option_type):
         super().__init__(ticker, shares)
+        self.isOption = True
         self.expiration = expiration
         self.strike = strike
         self.option_type = option_type
@@ -69,6 +70,12 @@ class OptionPosition(Position):
 
         gamma = norm.pdf(d1) / (S * sigma * np.sqrt(T))
         vega = S * norm.pdf(d1) * np.sqrt(T)
+
+        delta *= self.shares
+        gamma *= self.shares
+        vega *= self.shares
+        theta *= self.shares
+        rho *= self.shares
 
         return delta, gamma, vega / 100,  theta / 365,  rho / 100
 

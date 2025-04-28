@@ -21,9 +21,9 @@ class Portfolio:
             try:
                 switch = False
                 for i in self.tickers: 
-                    if (i.symbol == row['Ticker'].upper()):
+                    if (i.symbol == row['Ticker']):
                         ticker = i
-                        switch == True
+                        switch = True
                 
                 if (not switch):
                     ticker = Ticker(row["Ticker"])
