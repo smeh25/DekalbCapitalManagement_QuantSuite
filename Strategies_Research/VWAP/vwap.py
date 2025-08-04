@@ -40,5 +40,22 @@ def vwapCalculation():
     plt.tight_layout()
     plt.show()
 
+# Uses yFinance library
+def getVWAPSpecificData(ticker, days):
+    endDate = datetime.today()
+    startDate = endDate - timedelta(days=days)
+    data=yf.Ticker(ticker)
+    history = data.history(start=startDate, end=endDate) #automate dates at some point
+    return history
+
+# Reduced memory requirements by not storing every calculation in its own column
+def computeVWAP(history):
+    
+    typical_price = (history['High'] + history['Low'] + history['Close']) / 3
+    vwapColumn = (typical_price * history['Volume']).cumsum() / history['Volume'].cumsum()
+
+    return vwapColumn
+
+
     #next add a function to check if yesterdays VWAP against today's open. Goal is to trade within first 5 minutes, once condition is known, push corresponding order to market.
 vwapCalculation()
