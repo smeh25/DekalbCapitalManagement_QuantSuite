@@ -7,15 +7,16 @@ import time
 from datetime import datetime, timedelta
 import matplotlib.pyplot as plt
 
+
 #For now input will work but need to automate the input so it can iterate the calculation over a basket of stocks
 #Make variables travel between functions so we can seperate functions by task
-def vwapCalculation():
+'''def vwapCalculation():
     #dataDownload; seperate function in future
     endDate = datetime.today()
-    startDate = endDate - timedelta(days=90)
+    startDate = endDate - timedelta(days=10)
     tickerInput = input("Enter a ticker for the stock you want to calculate VWAP for: ")
     ticker=yf.Ticker(tickerInput)
-    history = ticker.history(start=startDate, end=endDate) #automate dates at some point
+    history = ticker.history(start=startDate, end=endDate) 
     print("History from:\n", history)
     
     #begin calc; seperate function in future
@@ -25,20 +26,9 @@ def vwapCalculation():
     history['CumVolume'] = history['Volume'].cumsum()
     history['VWAP'] = history['CumAvgPricexVolume'] / history['CumVolume']
     print(history['VWAP'])
-    
-    #plot function not working yet; will need to be a seperate function at some point. Needs tweaking to show each date on X-axis
-    #uniqueDates = history['Date'].unique()
-    #for date in uniqueDates:
-    #dailyData = history[history['Date'] == date]
-    plt.figure(figsize=(12, 6))
-    plt.plot(history.index, history['Close'], label='Close Price', color='blue')
-    plt.plot(history.index, history['VWAP'], label='VWAP', color='orange', linestyle='--')
-    plt.xlabel("Date")
-    plt.ylabel("Price")
-    plt.legend()
-    plt.grid(True)
-    plt.tight_layout()
-    plt.show()
+'''    
+
+
 
 # Uses yFinance library
 def getVWAPSpecificData(ticker, days):
@@ -57,5 +47,20 @@ def computeVWAP(history):
     return vwapColumn
 
 
-    #next add a function to check if yesterdays VWAP against today's open. Goal is to trade within first 5 minutes, once condition is known, push corresponding order to market.
-vwapCalculation()
+def vwapCheck(current, vwap):
+    if current < vwap:
+        print("Send a short order")
+    elif current > vwap:
+        print("Send a long order")
+    else:
+        print("Do not send an order")
+    return 
+
+
+
+
+#vwapCalculation()
+
+
+
+
