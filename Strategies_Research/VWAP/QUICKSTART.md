@@ -4,6 +4,22 @@ This project provides utilities for **calculating VWAP (Volume Weighted Average 
 
 ---
 
+## Main Method
+
+#### `vwapCheck(current: Union[float, Awaitable[float]], vwap: float, is_async: bool)`
+Outputs a trading signal based on comparson of the current market price of a stock to its VWAP. The function supports both **regular float prices** and **asynchronous price objects**.
+
+**Note:** The output is expected to be a json object that corresponds to a market order. For now it is not complete and simply prints the action to console
+
+**Parameters:**
+- `current` — The current price to compare against the VWAP. Can be either:
+  - **float** — a regular numeric price if `is_async=False`
+  - **awaitable / coroutine** — an async object returning a numeric price if `is_async=True`
+- `vwap` *(float)* — The VWAP reference price.
+- `is_async` *(bool)* — Whether `current` is an async object that needs to be awaited.
+
+---
+
 ## Helper Methods
 
 Located within *vwap.py*:
@@ -38,20 +54,8 @@ Calculated the VWAP (Volume Weighted Average Price) using historical price data
 
 ---
 
-## Main Method
 
-#### `vwapCheck(current: Union[float, Awaitable[float]], vwap: float, is_async: bool)`
-Outputs a trading signal based on comparson of the current market price of a stock to its VWAP. The function supports both **regular float prices** and **asynchronous price objects**.
-
-**Note:** The output is expected to be a json object that corresponds to a market order. For now it is not complete and simply prints the action to console
-
-**Parameters:**
-- `current` — The current price to compare against the VWAP. Can be either:
-  - **float** — a regular numeric price if `is_async=False`
-  - **awaitable / coroutine** — an async object returning a numeric price if `is_async=True`
-- `vwap` *(float)* — The VWAP reference price.
-- `is_async` *(bool)* — Whether `current` is an async object that needs to be awaited.
-
+### Examples
 
 **Async Example**
 
@@ -77,7 +81,15 @@ asyncio.run(vwapCheck(lastVwap, 120, is_async=False))
 ```
 
 **Jupyter Notebook Script**
-If running in a `.ipynb` file, you must replace ```python asyncio.run(vwapCheck(get_price(), 120, is_async=True)) ``` with ```python await vwapCheck(229.25, lastVwap, is_async=False) ``` because notebooks already have an active event loop.
+If running in a `.ipynb` file, you must replace 
+```python 
+asyncio.run(vwapCheck(get_price(), 120, is_async=True)) 
+``` 
+with 
+```python 
+await vwapCheck(229.25, lastVwap, is_async=False) 
+``` 
+because notebooks already have an active event loop.
 
 
 
