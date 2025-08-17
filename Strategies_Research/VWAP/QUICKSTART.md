@@ -70,6 +70,7 @@ asyncio.run(vwapCheck(get_price(), 120, is_async=True))
 ```
 
 **Non Async Example**
+
 You must still run the function as an async loop (using `asyncio.run()`) although you will not need an awaitable object. This example also shows how to implement the helper methods. 
 ```python
 import asyncio
@@ -81,6 +82,7 @@ asyncio.run(vwapCheck(lastVwap, 120, is_async=False))
 ```
 
 **Jupyter Notebook Script**
+
 If running in a `.ipynb` file, you must replace 
 ```python 
 asyncio.run(vwapCheck(get_price(), 120, is_async=True)) 
