@@ -42,6 +42,7 @@ Calculated the VWAP (Volume Weighted Average Price) using historical price data
 
 #### `vwapCheck(current: Union[float, Awaitable[float]], vwap: float, is_async: bool)`
 Outputs a trading signal based on comparson of the current market price of a stock to its VWAP. The function supports both **regular float prices** and **asynchronous price objects**.
+
 **Note:** The output is expected to be a json object that corresponds to a market order. For now it is not complete and simply prints the action to console
 
 **Parameters:**
@@ -64,12 +65,19 @@ async def get_price():
 asyncio.run(vwapCheck(get_price(), 120, is_async=True))
 ```
 
-**Example Using Helper Methods**
+**Non Async Example**
+You must still run the function as an async loop (using `asyncio.run()`) although you will not need an awaitable object. This example also shows how to implement the helper methods. 
 ```python
+import asyncio
 historyAAPL = getVWAPSpecificData("AAPL", 5)
 historyAAPL["VWAP"] = computeVWAP(historyAAPL)
 lastVwap = historyAAPL["VWAP"].iloc[-1]
-vwapCheck(229.25, lastVwap)
+
+asyncio.run(vwapCheck(lastVwap, 120, is_async=False))
 ```
+
+**Jupyter Notebook Script**
+If running in a `.ipynb` file, you must replace ```python asyncio.run(vwapCheck(get_price(), 120, is_async=True)) ``` with ```python await vwapCheck(229.25, lastVwap, is_async=False) ``` because notebooks already have an active event loop.
+
 
 
