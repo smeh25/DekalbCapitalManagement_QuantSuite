@@ -43,11 +43,13 @@ def computeVWAP(history):
     
     typical_price = (history['High'] + history['Low'] + history['Close']) / 3
     vwapColumn = (typical_price * history['Volume']).cumsum() / history['Volume'].cumsum()
-
     return vwapColumn
 
 
-def vwapCheck(current, vwap):
+async def vwapCheck(current, vwap, is_async=False):
+    if is_async:
+        current = await current   # <-- wait for the async price
+            
     if current < vwap:
         print("Send a short order")
     elif current > vwap:
