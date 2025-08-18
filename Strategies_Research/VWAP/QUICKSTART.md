@@ -6,6 +6,8 @@ This project provides utilities for **calculating VWAP (Volume Weighted Average 
 
 ## Main Method
 
+Located within *vwap.py*
+
 #### `vwapCheck(current: Union[float, Awaitable[float]], vwap: float, is_async: bool)`
 Outputs a trading signal based on comparson of the current market price of a stock to its VWAP. The function supports both **regular float prices** and **asynchronous price objects**.
 
