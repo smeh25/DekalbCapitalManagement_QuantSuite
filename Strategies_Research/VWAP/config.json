@@ -1,0 +1,8 @@
+{
+    "stocks": [
+        "AAPL",
+        "MSFT",
+        "TSLA"
+    ],
+    "days": 10
+}
