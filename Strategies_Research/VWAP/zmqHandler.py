@@ -25,6 +25,25 @@ async def tick_listener(tick_socket):
         msg = await tick_socket.recv_json()
         queueHandler.on_tick(msg)
 
+import json
+import uuid
+from datetime import datetime, timezone
+
+def subscribe(order_socket, tickers: list[str]):
+
+    for symbol in tickers:
+        payload = {
+            "command": "SUBSCRIBE_MARKET_DATA",
+            "correlation_id": str(uuid.uuid4()),  # unique ID per request
+            "timestamp": datetime.now(timezone.utc).isoformat(),
+            "payload": {
+                "symbol": symbol,
+                "data_types": ["TICK"]
+            }
+        }
+        order_socket.send_json(payload)
+        print(f"[SUBSCRIBE] Sent subscription for {symbol}")
+
 
 def main():
     # load config
@@ -42,6 +61,9 @@ def main():
 
     # start strategy (sync call)
     queueHandler.initialize(config, place_order)
+
+    tickers = config["stocks"]
+    subscribe(order_socket, tickers)
 
     # start event loop
     loop = asyncio.get_event_loop()
