@@ -4,5 +4,7 @@
         "MSFT",
         "TSLA"
     ],
-    "days": 10
+    "days": 10,
+    "tickSocket": "tcp://127.0.0.1:5555",
+    "outputSocket": "tcp://127.0.0.1:5556"
 }
