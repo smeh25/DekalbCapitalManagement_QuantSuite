@@ -1,9 +1,13 @@
 # Run this file and it will execture VWAP based on input from the config file
 # This is setup in more of oop style because we need static variables
 import vwap_async as vp
+import zmq
+import zmq.asyncio
 import asyncio
   
 queues = {}
+
+
 
 def on_tick(tick: dict):
     price = tick["data"]["price"]
@@ -18,7 +22,7 @@ def on_tick(tick: dict):
     return
 
 
-async def register_task(symbol, vwap):
+async def register_task(symbol, vwap, place_order):
 
     if symbol not in queues:
         queues[symbol] = asyncio.Queue()
@@ -30,6 +34,7 @@ async def register_task(symbol, vwap):
     result = await vp.vwapCheck(symbol, current_price, vwap)
     place_order(result) # Need to import from trading engine 
     return
+
 
 
 # Read config details
@@ -50,10 +55,10 @@ def load_config(filepath):
 
 
 
-def initialize():
+def initialize(config, place_order):
     # List all of the stocks to run the VWAP for in the main method, I would like to make this a parameter, lets discuss
-    config_file_path = 'config.json'
-    config = load_config(config_file_path)
+    # config_file_path = 'config.json'
+    # config = load_config(config_file_path)
     stocks = config["stocks"]
     days = config["days"]
     
@@ -61,7 +66,7 @@ def initialize():
     for stock in stocks:
         history = vp.getVWAPSpecificData(stock, days)
         vwaps[stock] = vp.computeVWAP(history).iloc[-1]
-        asyncio.create_task(register_task(stock, vwap=vwaps[stock]))
+        asyncio.create_task(register_task(stock, vwap=vwaps[stock], place_order= place_order))
     
     
     

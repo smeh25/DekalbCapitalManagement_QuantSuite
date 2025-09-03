@@ -52,12 +52,6 @@ async def vwapCheck(symbol, current, vwap, is_async=True):
     else:
         print("Do not send an order")
 
-    # if current < vwap:
-    #     print("Send a short order")
-    # elif current > vwap:
-    #     print("Send a long order")
-    # else:
-    #     print("Do not send an order")
     return 
 
 
