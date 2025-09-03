@@ -1,0 +1,4 @@
+pyzmq
+yfinance
+pandas
+numpy
