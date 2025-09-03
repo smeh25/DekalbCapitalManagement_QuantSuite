@@ -2,7 +2,7 @@ import asyncio
 import zmq
 import zmq.asyncio
 import json
-import Strategies_Research.VWAP.queueHandler as queueHandler   # import your strategy logic
+import queueHandler   # import your strategy logic
 
 ctx = zmq.asyncio.Context()
 
