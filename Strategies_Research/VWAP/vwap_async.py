@@ -5,7 +5,6 @@ import math
 import numpy as np
 import time 
 from datetime import datetime, timedelta
-import matplotlib.pyplot as plt
 
 
 # Uses yFinance library
