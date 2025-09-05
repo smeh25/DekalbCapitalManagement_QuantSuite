@@ -61,13 +61,16 @@ def initialize(config, place_order):
     # config = load_config(config_file_path)
     stocks = config["stocks"]
     days = config["days"]
+    tasks = []
     
     vwaps = {}
     for stock in stocks:
         history = vp.getVWAPSpecificData(stock, days)
         vwaps[stock] = vp.computeVWAP(history).iloc[-1]
-        asyncio.create_task(register_task(stock, vwap=vwaps[stock], place_order= place_order))
-    
+        tasks.append(register_task(stock, vwap=vwaps[stock], place_order=place_order))
+
+        # asyncio.create_task(register_task(stock, vwap=vwaps[stock], place_order= place_order))
+    return tasks
     
     
     """

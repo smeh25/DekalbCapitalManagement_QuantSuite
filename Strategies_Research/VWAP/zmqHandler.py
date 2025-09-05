@@ -46,27 +46,25 @@ def subscribe(order_socket, tickers: list[str]):
 
 
 def main():
-    # load config
     with open("config.json", "r") as f:
         config = json.load(f)
 
-    # setup sockets from config
     tick_socket = make_tick_socket(config["tickSocket"])
     order_socket = make_order_socket(config["outputSocket"])
 
-    # define sync place_order for queueHandler
     def place_order(order: dict):
-        order_socket.send_json(order)  # blocking send is fine here
+        order_socket.send_json(order)
         print(f"[ORDER SENT] {order}")
 
-    # start strategy (sync call)
-    queueHandler.initialize(config, place_order)
+    # initialize returns list of coroutines
+    tasks = queueHandler.initialize(config, place_order)
 
     tickers = config["stocks"]
     subscribe(order_socket, tickers)
 
-    # start event loop
     loop = asyncio.get_event_loop()
+    for task in tasks:
+        loop.create_task(task)   # now we have a loop, so this works
     loop.create_task(tick_listener(tick_socket))
     loop.run_forever()
 
