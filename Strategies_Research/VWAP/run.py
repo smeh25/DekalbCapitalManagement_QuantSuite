@@ -16,12 +16,12 @@ class VWAPRunner:
 
         # Incoming ticks (SUB)
         self.sub_socket = self.ctx.socket(zmq.SUB)
-        self.sub_socket.connect(f"tcp://127.0.0.1:{zmq_in_port}")
+        self.sub_socket.connect(f"tcp://127.0.0.1:{zmq_in_port}") # 5555
         self.sub_socket.setsockopt_string(zmq.SUBSCRIBE, "")
 
         # Outgoing orders (PUB)
         self.pub_socket = self.ctx.socket(zmq.PUB)
-        self.pub_socket.bind(f"tcp://127.0.0.1:{zmq_out_port}")
+        self.pub_socket.connect(f"tcp://127.0.0.1:{zmq_out_port}")
 
     def initialize(self):
         """Compute VWAP for the stock at startup."""
@@ -57,7 +57,7 @@ class VWAPRunner:
                 "data_types": ["TICK"]
             }
         }
-        self.order_socket.send_json(payload)
+        self.pub_socket.send_json(payload)
         print(f"[SUBSCRIBE] Sent subscription for {self.ticker}")
 
         # --- listen loop for ticks ---
