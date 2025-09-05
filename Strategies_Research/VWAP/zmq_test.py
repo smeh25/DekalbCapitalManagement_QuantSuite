@@ -10,7 +10,7 @@ ctx = zmq.asyncio.Context()
 
 # sockets
 input_socket = ctx.socket(zmq.PULL)   # where subs/orders arrive
-input_socket.bind("tcp://127.0.0.1:5556")
+input_socket.connect("tcp://127.0.0.1:5556")
 
 output_socket = ctx.socket(zmq.PUB)   # where ticks are published
 output_socket.bind("tcp://127.0.0.1:5555")
