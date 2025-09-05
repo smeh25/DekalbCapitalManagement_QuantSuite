@@ -27,32 +27,55 @@ def computeVWAP(history):
 import uuid
 from datetime import datetime, timezone
 
-async def vwapCheck(symbol, current, vwap, is_async=True):
-    if is_async:
-        current = await current   # <-- wait for the async price
+# async def vwapCheck(symbol, current, vwap, is_async=True):
+#     if is_async:
+#         current = await current   # <-- wait for the async price
 
-    if current < vwap:
-        print("Send a short order")
+#     if current < vwap:
+#         print("Send a short order")
 
-    elif current > vwap:
-        buy_order = {
+#     elif current > vwap:
+#         buy_order = {
+#             "command": "CREATE_ORDER",
+#             "correlation_id": str(uuid.uuid4()),
+#             "timestamp": datetime.now(timezone.utc).isoformat(),
+#             "payload": {
+#                 "symbol": symbol,   
+#                 "side": "BUY",
+#                 "order_type": "MARKET",
+#                 "quantity": 50 # arbitrary for now
+#             }
+#         }
+#         return buy_order
+        
+#     else:
+#         print("Do not send an order")
+
+#     return 
+
+def vwapCheck(symbol: str, current_price: float, vwap: float):
+    """Compare current price vs VWAP and return an order if needed."""
+    if current_price < vwap:
+        print(f"[{symbol}] Current ({current_price:.2f}) < VWAP ({vwap:.2f}) → SHORT (not implemented)")
+        return None
+
+    elif current_price > vwap:
+        order = {
             "command": "CREATE_ORDER",
             "correlation_id": str(uuid.uuid4()),
             "timestamp": datetime.now(timezone.utc).isoformat(),
             "payload": {
-                "symbol": symbol,   
+                "symbol": symbol,
                 "side": "BUY",
                 "order_type": "MARKET",
-                "quantity": 50 # arbitrary for now
+                "quantity": 50  # arbitrary for now
             }
         }
-        return buy_order
-        
+        return order
+
     else:
-        print("Do not send an order")
-
-    return 
-
+        print(f"[{symbol}] Current ({current_price:.2f}) == VWAP ({vwap:.2f}) → HOLD")
+        return None
 
 
 
